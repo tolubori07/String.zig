@@ -1,24 +1,26 @@
 const std = @import("std");
+const memchar = @import("./memchar.zig");
+const memcmp = @import("./memcmp.zig");
 
 pub fn main() !void {
-    // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
-    std.debug.print("All your {s} are belong to us.\n", .{"codebase"});
+    const str1 = "hello";
+    const str2 = "world";
+    const n = 5;
+    const result = memcmp.memcmp(str1[0..], str2[0..], n);
+    std.debug.print("Result: {d}\n", .{result});
 
-    // stdout is for the actual output of your application, for example if you
-    // are implementing gzip, then only the compressed bytes should be sent to
-    // stdout, not any debugging messages.
-    const stdout_file = std.io.getStdOut().writer();
-    var bw = std.io.bufferedWriter(stdout_file);
-    const stdout = bw.writer();
+    const str3 = "hello";
+    const str4 = "hello";
+    const result2 = memcmp.memcmp(str3[0..], str4[0..], n);
+    std.debug.print("Result: {d}\n", .{result2});
 
-    try stdout.print("Run `zig build test` to run the tests.\n", .{});
+    const str5 = "hello";
+    const str6 = "hell";
+    const result3 = memcmp.memcmp(str5[0..], str6[0..], n);
+    std.debug.print("Result: {d}\n", .{result3});
 
-    try bw.flush(); // don't forget to flush!
-}
-
-test "simple test" {
-    var list = std.ArrayList(i32).init(std.testing.allocator);
-    defer list.deinit(); // try commenting this out and see if zig detects the memory leak!
-    try list.append(42);
-    try std.testing.expectEqual(@as(i32, 42), list.pop());
+    const str7 = "hello world";
+    const str8 = "hello";
+    const result4 = memcmp.memcmp(str7[0..], str8[0..], 5);
+    std.debug.print("Result: {d}\n", .{result4});
 }
